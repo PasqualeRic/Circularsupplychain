@@ -8,8 +8,9 @@ contract DEMO{
     constructor() public{
         manufacturer = new Manufacturer("idManufacturer", "nameManufacturer", "");
     }
-    function prova() public returns(string memory){
-        string memory serial = manufacturer.createProduct("Pelle", "Borsa", "10");
-        return serial;
+    function prova() public returns(uint[][] memory){
+        //string memory serial = manufacturer.createProduct("Pelle", "Borsa", "10");
+        uint[][] memory matrice = manufacturer.dinamic_programming(4, 3, 2);
+        return matrice;
     }
 }
