@@ -1,16 +1,23 @@
 pragma solidity >=0.7.0 <0.9.0;
 import "./Manufacturer.sol";
-import "./Product.sol";
-// una semplice funzione che creato un prodotto tramite l'azienda mi restituisce il prezzo
+import "./Shop.sol";
+import "./Transport.sol";
+import "hardhat/console.sol";
 contract DEMO{
     Manufacturer public manufacturer;
-    Product public product;
+    Shop public shop;
+    Shop public shop2;
+    Transport public transport;
     constructor() public{
-        manufacturer = new Manufacturer("idManufacturer", "nameManufacturer", "");
+        manufacturer = new Manufacturer("Gucci");
+        shop = new Shop("shop1", "Gucci", 100, 200, 300);
+        shop2 = new Shop("shop2", "Gucci", 100, 200, 300);
+        transport = new Transport("Bartolini");
     }
-    function prova() public returns(uint[][] memory){
-        //string memory serial = manufacturer.createProduct("Pelle", "Borsa", "10");
-        uint[][] memory matrice = manufacturer.dinamic_programming(4, 3, 2);
-        return matrice;
+    function ordine() public returns(bool){
+       uint codiceConsegna = shop.createOrder(manufacturer.contractAddress(),transport.contractAddress(),1,1,1);
+       bool controllo = shop.controlloOrdine(transport.contractAddress(), codiceConsegna);
+
+       return controllo;
     }
 }

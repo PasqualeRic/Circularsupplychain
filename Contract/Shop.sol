@@ -1,22 +1,32 @@
 pragma solidity >=0.7.0 <0.9.0;
+import "./Manufacturer.sol";
+import "hardhat/console.sol";
 contract Shop{
-    string private id;
-    string private country;
-    string private city;
-    string private streetAddress;
-    string private cap;
-    string private name;
-    string private province;
-    constructor (string memory id, string memory shopName, string memory streetAddress, string memory cap, string memory city, string memory province, string memory country) public payable{
-        id = id;
-        country = country;
-        city = city;
-        streetAddress = streetAddress;
-        cap = cap;
-        shopName = shopName;
-        province = province;
+    string id;
+    string shopName;
+    uint distanzaAerea;
+    uint distanzaAsfalto;
+    uint distanzaRotaie;
+    constructor (string memory _id, string memory _shopName, uint _distanzaAerea, uint _distanzaRotaie, uint _distanzaAsfalto) public payable{
+        id = _id;
+        shopName = _shopName;
+        distanzaAerea = _distanzaAerea;
+        distanzaAsfalto = _distanzaAsfalto;
+        distanzaRotaie = _distanzaRotaie;
     }
-
-    //funzione che permettere al negozio di fare ordini all'azienda
+    //funzione che restituisce l'indirizzo del contratto
+    function contractAddress() public view returns (address) {
+        return address(this);
+    }
     
+    function createOrder(address _manufacturer, address _transport, uint numeroBorse, uint numeroCinte, uint numeroPortafogli) public returns(uint){
+        Manufacturer manufacturer = Manufacturer(_manufacturer);
+        uint codiceConsegna = manufacturer.processOrder(address(this), _transport, numeroBorse, numeroCinte, numeroPortafogli);
+        return codiceConsegna;
+    }
+    function controlloOrdine(address _transport, uint codiceConsegna) public returns(bool){
+        Transport transport = Transport(_transport);
+        bool controllo = transport.controllo(address(this), codiceConsegna);
+        return controllo;
+    }
 }

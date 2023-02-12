@@ -1,13 +1,38 @@
 pragma solidity >=0.7.0 <0.9.0;
+import "hardhat/console.sol";
+import "./Transport.sol";
+contract Manufacturer{
+    string nomeAzienda;
+    uint nBorse;
+    uint nCinture;
+    uint nPortafogli;
+    constructor(string memory _nomeAzienda) public{
+        nomeAzienda = _nomeAzienda;
+    }
+    //funzione che restituisce l'indirizzo del contratto
+    function contractAddress() public view returns (address) {
+        return address(this);
+    }
+    //funzione che processa l'ordine e manda sia al negozio che al corriere un codice di consegna 
+    function processOrder(address _shop, address _transport, uint _numeroBorse, uint _numeroCinture, uint _numeroPortafogli) public returns(uint){
+        Transport transport = Transport(_transport);
+        nBorse = _numeroBorse;
+        nCinture = _numeroCinture;
+        nPortafogli = _numeroPortafogli;
+        uint codiceConsegna = uint(keccak256(abi.encodePacked(_shop)));
+        transport.inConsegna(codiceConsegna, _shop);
+        return codiceConsegna;
+    }
+}
 
-contract Transport{
+
+/*contract Transport{
     uint w;
     uint h;
     uint n1;
     uint n2;
     uint n3;
     bool matassaOK;
-    event LogTrue(uint,uint );
     struct Rettangoli{
         uint w;
         uint h;
@@ -127,7 +152,7 @@ contract Transport{
         return m;
     }
 }
-
+*/
 
 
 /*contract Manufacturer{
