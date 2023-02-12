@@ -26,6 +26,7 @@ contract Manufacturer{
         transport.inConsegna(codiceConsegna, _shop);
         return codiceConsegna;
     }
+    //funzione che chiede al corriere di calcolare il consumo per ogni mezzo e restituirmi il mezzo migliore con il consumo
     function calcoloConsumo(address _shop, address _transport) public returns(string memory, uint){
         uint distanzaAerea;
         uint distanzaAsfalto;

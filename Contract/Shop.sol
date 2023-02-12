@@ -19,17 +19,19 @@ contract Shop{
     function contractAddress() public view returns (address) {
         return address(this);
     }
-    
+    //funzione che invia all'azienda il numero di oggetti da produrre
     function createOrder(address _manufacturer, address _transport, uint numeroBorse, uint numeroCinte, uint numeroPortafogli) public returns(uint){
         Manufacturer manufacturer = Manufacturer(_manufacturer);
-        uint codiceConsegna = manufacturer.processOrder(address(this), _transport, numeroBorse, numeroCinte, numeroPortafogli);
+        uint codiceConsegna = manufacturer.processOrder(address(this), _transport, numeroBorse, numeroCinte, numeroPortafogli); //l'azienda prende i dati e una volta in consegna l'ordine, restituisce un codice univoco 
         return codiceConsegna;
     }
+    //funzione che permette al negozio di controllare che l'ordine consegnato sia effettivamente il suo
     function controlloOrdine(address _transport, uint codiceConsegna) public returns(bool){
         Transport transport = Transport(_transport);
         bool controllo = transport.controllo(address(this), codiceConsegna);
         return controllo;
     }
+    //funzione che ritorna le distanze per ogni mezzo dall'azienda al negozio
     function getDistance() public returns(uint, uint, uint){
         return(distanzaAerea, distanzaAsfalto, distanzaRotaie);
     }

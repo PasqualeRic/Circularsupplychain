@@ -18,9 +18,11 @@ contract Transport{
     function contractAddress() public view returns (address) {
         return address(this);
     }
+    //funzione che tiene traccia di tutti i codice di consegna che arrivano dall'azienda e vengono salvati in corrispondenza dell'indirizzo dello shop a cui devo mandare l'ordine
     function inConsegna(uint codiceConsegna, address _shop) public{
         listaConsegne[_shop] = codiceConsegna;
     }
+    //funzione invocata dallo shop per controllare che il pacco sia effettivamente il suo
     function controllo(address _shop, uint codiceConsegna) public returns(bool){
         if(listaConsegne[_shop] == codiceConsegna){
             return true;
@@ -28,6 +30,7 @@ contract Transport{
             return false;
         }
     }
+    //funzione che calcola il minor conusmo prodotto dai vari mezzi e restituisce quello migliore
     function calcoloConsumo(uint distanzaAerea, uint distanzaAsfalto, uint distanzaRotaie) public returns(string memory, uint){
         string[5] memory mezzi = ["Treno","Aereo", "CamionDiesel", "CamionBenzina", "CamionGPL"];
         
