@@ -8,16 +8,19 @@ contract DEMO{
     Shop public shop;
     Shop public shop2;
     Transport public transport;
+    uint consumo;
+    string mezzo;
     constructor() public{
         manufacturer = new Manufacturer("Gucci");
-        shop = new Shop("shop1", "Gucci", 100, 200, 300);
+        shop = new Shop("shop1", "Gucci", 80, 200, 4000);
         shop2 = new Shop("shop2", "Gucci", 100, 200, 300);
         transport = new Transport("Bartolini");
     }
-    function ordine() public returns(bool){
+    function ordine() public returns(string memory, uint){
        uint codiceConsegna = shop.createOrder(manufacturer.contractAddress(),transport.contractAddress(),1,1,1);
        bool controllo = shop.controlloOrdine(transport.contractAddress(), codiceConsegna);
-
-       return controllo;
+       require(controllo == true, "il codice e' errato o il pacco non e' corretto");
+       (mezzo, consumo) = manufacturer.calcoloConsumo(shop.contractAddress(), transport.contractAddress());
+       return (mezzo,consumo);
     }
 }

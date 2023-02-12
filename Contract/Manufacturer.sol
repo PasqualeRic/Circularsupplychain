@@ -1,11 +1,14 @@
 pragma solidity >=0.7.0 <0.9.0;
 import "hardhat/console.sol";
 import "./Transport.sol";
+import "./Shop.sol";
 contract Manufacturer{
     string nomeAzienda;
     uint nBorse;
     uint nCinture;
     uint nPortafogli;
+    uint consumo;
+    string mezzo;
     constructor(string memory _nomeAzienda) public{
         nomeAzienda = _nomeAzienda;
     }
@@ -22,6 +25,16 @@ contract Manufacturer{
         uint codiceConsegna = uint(keccak256(abi.encodePacked(_shop)));
         transport.inConsegna(codiceConsegna, _shop);
         return codiceConsegna;
+    }
+    function calcoloConsumo(address _shop, address _transport) public returns(string memory, uint){
+        uint distanzaAerea;
+        uint distanzaAsfalto;
+        uint distanzaRotaie;
+        Transport transport = Transport(_transport);
+        Shop shop = Shop(_shop);
+        (distanzaAerea, distanzaAsfalto, distanzaRotaie) = shop.getDistance();
+        (mezzo,consumo) = transport.calcoloConsumo(distanzaAerea, distanzaAsfalto, distanzaRotaie);
+        return(mezzo, consumo);
     }
 }
 

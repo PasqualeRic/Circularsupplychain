@@ -1,5 +1,6 @@
 pragma solidity >=0.7.0 <0.9.0;
 import "./Manufacturer.sol";
+import "./Transport.sol";
 import "hardhat/console.sol";
 contract Shop{
     string id;
@@ -28,5 +29,8 @@ contract Shop{
         Transport transport = Transport(_transport);
         bool controllo = transport.controllo(address(this), codiceConsegna);
         return controllo;
+    }
+    function getDistance() public returns(uint, uint, uint){
+        return(distanzaAerea, distanzaAsfalto, distanzaRotaie);
     }
 }
