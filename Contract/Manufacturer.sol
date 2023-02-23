@@ -1,8 +1,9 @@
 pragma solidity >=0.7.0 <0.9.0;
 import "./Transport.sol";
 import "./Shop.sol";
+import "./Template.sol";
 import "./Oracle.sol";
-contract Manufacturer{
+contract Manufacturer is Template{
     Oracle public oracle; 
     string nomeAzienda;
     uint nBorse;
@@ -15,19 +16,8 @@ contract Manufacturer{
     uint matassa2;
     uint matassa3;
     uint prova;
-    struct Matasse{
-        uint w;
-        uint h;
-    }
     Matasse[] matasse;
-
-     struct Coordinate{
-        uint X0;
-        uint Y0;
-        uint Xw;
-        uint Yh;
-    }
-    Coordinate[] coordinate1;
+    Coordinate[] coordinate;
     constructor(string memory _nomeAzienda) public{
         matasse.push(Matasse(2000,100));
         matasse.push(Matasse(4000,100));
@@ -72,8 +62,8 @@ contract Manufacturer{
         matassa3 = _m3;
         spreco = val;
     }
-    function retP() external returns(Oracle.Coordinate[] memory){
-        Oracle.Coordinate[] memory coordinate = oracle.returnCoordinate();
+    function retP() external returns(Coordinate[] memory){
+       Coordinate[] memory coordinate = oracle.returnCoordinate();
         return coordinate;
     }
     function returnConsumo() external returns(uint){
